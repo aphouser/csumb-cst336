@@ -1,0 +1,60 @@
+<%- include('partials/header.ejs') %>
+            <a id="menu" class="nav-link" href="/">Home</a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/cart">Cart</a>
+          </li>
+          <li id="menu" class="nav-item active">
+            <a id="menu" class="nav-link" href="/adminLogin">Admin<span class="sr-only">(current)</span></a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<head>
+
+  <!-- Custom styles for this template -->
+  <link href="css/admin-login.css" rel="stylesheet">
+</head>
+
+
+
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    <div class="col-md-8 col-lg-6">
+      <div class="login d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto">
+              <h3 class="login-heading mb-4">Administrator Login Page</h3>
+              <form method="POST">
+                <div class="form-label-group">
+                  <input type="email" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                  <label for="inputEmail">Login</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input type="password" name="inputPassword" class="form-control" placeholder="Password" required>
+                  <label for="inputPassword">Password</label>
+                </div>
+                <button id="adminSubmit" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
+              </form>
+              <% if (typeof loginError != "undefined" && loginError) { %>
+                  <h4 class="error">Admin email or password incorrect.</h4>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="adminInfo">
+  
+</div>
+
+<%- include('partials/footer.ejs') %>

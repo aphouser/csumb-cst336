@@ -1,0 +1,80 @@
+<%- include('partials/header.ejs') %>
+          <li id="menu"class="nav-item active">           
+            <a id="menu" class="nav-link" href="/">Home<span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/cart"> Cart</a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/admin"> Admin</a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/logout"> Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+    <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+        <br>
+        <div class="list-group">
+            <p>Nuts Filters:</p>
+            <button type="submit" id="showAll" class="btn btn-secondary btn-lg btn-block">Show All Candy</button>
+            <button type="submit" id="noNuts" class="btn btn-secondary btn-lg btn-block">No! No! No! Nuts</button>
+            <button type="submit" id="nuts" class="btn btn-secondary btn-lg btn-block">Yes! Nuts!</button>
+            <br><p>Inventory Filters:</p>
+            <button type="submit" id="inventory" class="btn btn-primary btn-lg btn-block">Quantity Available</button>
+            <br><p>Wrapper Color Filter:</p>
+            <button type="submit" id="color" class="btn btn-danger btn-lg btn-block">Red Wrappers</button>
+        </div>
+      </div>
+
+      <div class="col-lg-9">
+        <br>
+
+          
+<!-- THIS IS WHAT WE HAVE TO REPEAT TWENTY TIMES, ONCE FOR EACH BAR -->
+<div id="result" class="row">
+        <% candyInfo.forEach(function(candyInfo) { %>  
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              <img class="card-img-top" src="img/bars/<%=candyInfo['bar_id']%>.jpg" alt="">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <%=candyInfo['candy_name']%>
+                </h4>
+                <h5 id="price">$<%=candyInfo['price']%></h5>
+                <ul class="card-text">
+                  <li id="nuts"><b>Nuts: </b><%=candyInfo['nut']%> </li>
+                  <li id ="nutType"><b>Nut Type: </b><%=candyInfo['nut_type']%></li>
+                  <li id= "calories"><b>Calories: </b><%=candyInfo['kcal']%></li>
+                </ul>
+    
+                <% if(candyInfo['qty_instock'] == 0) { %>
+                  <img bar_id=<%=candyInfo['bar_id']%> class="cartIcon" src="img/outofstock.png" width="20" align="right">
+                <% } else if(candyInfo['quantity'] > 0){ %>
+                  <img bar_id=<%=candyInfo['bar_id']%> class="cartIcon" src="img/cartFull.png" width="20" align="right">
+                <% } else{ %>  
+                  <img bar_id=<%=candyInfo['bar_id']%> class="cartIcon" src="img/cartEmpty.png" width="20" align="right">
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+</div>
+<!-- END BAR LISTING -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<%- include('partials/footer.ejs') %>

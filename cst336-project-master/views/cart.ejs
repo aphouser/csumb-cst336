@@ -1,0 +1,55 @@
+<%- include('partials/header.ejs') %>
+            <a id="menu" class="nav-link" href="/">Home</a>
+          </li>
+          <li id="menu" class="nav-item active">
+            <a id="menu" class="nav-link" href="/cart">Cart<span class="sr-only">(current)</span></a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/admin">Admin</a>
+          </li>
+          <li id="menu" class="nav-item">
+            <a id="menu" class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+        <header>
+            <div class="container"></div>
+            <br>
+            <h2 align="center">Your Cart</h2>
+        </header>
+
+        <main>
+            <br>
+            <table class="table table-striped" id="cart">
+                <thead>
+                    <th class="Product_Description">Product</th>
+                    <th class="UnitPrice">Unit Price</th>
+                    <th class="Quantity">Quantity</th>
+                    <th class="Total">Total</th>
+                </thead>
+                
+                <% cartInfo.forEach(function(cartInfo) { %>
+                    <tr>
+                        <td id="bar_id" style="display: none; height: 100px;"><%=cartInfo['bar_id']%></td>
+                        <td><img src=img/bars/<%=cartInfo['bar_id']%>.jpg alt="Item" width="80"><%=cartInfo['candy_name']%></td>
+                        <td id="price">$<%=cartInfo['price'].toFixed(2)%></td>
+                        <td id="qty"><input type="number" min="1" max="5" id="quantity" value= "<%=cartInfo['quantity']%>"></td>
+                        <td id="total">$<%=(cartInfo['price']*cartInfo['quantity']).toFixed(2)%></td>
+                    </tr>
+                <% }) %>
+            </table>
+
+            <div id="summary" align="center">
+                <button id="cartButton" class="btn btn-primary btn-login text-uppercase font-weight-bold mb-2">Update Cart</button>
+                <h5>Subtotal:</h5>
+                <h5 class="subtotal" id="cart_subtotal"></h5>
+                <h3>Total + 15% Service Fee:</h3>
+                <h3 id="cart_total"></h3>
+            </div>
+            
+        </main>
+
+<%- include('partials/footer.ejs') %>
