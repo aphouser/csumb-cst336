@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Sign Up Page </title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body class="bg-light">
+        
+        <h1 class="page-header text-center text-dark"><u>Sign Up</u></h1>
+        
+        <form id="signupForm" method="post" action="welcome.html">
+            <div class="form-group">
+            First name:  <input type="text" class="form-control" name="fName"><br>
+            Last name:   <input type="text" class="form-control" name="lName"><br>
+            Gender:      <input type="radio" name="gender" value="m"> Male
+                         <input type="radio" name="gender" value="f"> Female<br><br>
+            
+            
+            Zip Code:    <input type="text" class="form-control" name="zip" id="zip">
+                         <span id="zipError"></span><br>
+            City:        <span id="city"></span><br>
+            Latitude:    <span id="latitude"></span><br>
+            Longitude:   <span id="longitude"></span><br><br>
+            
+            State: 
+            <select id="state" class="form-control" name="state">
+                <option value="">Select One</option>
+            </select><br>
+            
+            Select a County: <select id="county" class="form-control"></select><br><br>
+            
+            Desired Username:     <input type="text"    id="username"    class="form-control" name="username"><br>
+                                  <span id="usernameError"></span><br>
+            Password:             <input type="password" id="password"    class="form-control" placeholder="Must be 6 characters" name="password"><br>
+            Password Again:       <input type="password" id="passwordAgain" class="form-control"  placeholder="Must match password above"><br>
+                                  <span id="passwordAgainError"></span><br>
+            
+            <input type="submit" class="btn-block btn-primary" value="Sign Me Up!">
+            </div>
+        </form>
+        
+        <script>
+            
+            var usernameAvailable = false;
+            
+            //Displaying a City from API after typing a zip code
+            $("#zip").on("change",function(){
+                //clear zipcode errors
+                $("#zipError").html("");
+                
+                //alert($("#zip").val());
+                $.ajax({
+                    method: "get",
+                    url: "https://cst336.herokuapp.com/projects/api/cityInfoAPI.php",
+                    dataType: "json",
+                    data: {"zip" : $("#zip").val()},
+                    success: function(result,status) {
+                        
+                        if(result.zip) {
+                            $("#city").html(result.city);
+                            $("#latitude").html(result.latitude);
+                            $("#longitude").html(result.longitude);
+                        }
+                        else {
+                            $("#zipError").html("Zip code not found.");
+                            $("#zipError").css("color", "red");
+                        }
+ 
+                    } 
+                    
+                });//ajax
+
+                
+            });//zip
+            
+            //initially populate states
+            $(document).ready(function(){
+                $.ajax({
+                    method: "get",
+                    url: "https://cst336.herokuapp.com/projects/api/state_abbrAPI.php",
+                    dataType: "json",
+                    data: {"state" : $("#state").val()},
+                    success: function(result,status) {
+      
+                        //alert(result[0].county);
+                        $("#state").html("<option> Select One </option>");
+                        for (let i = 0; i < result.length; i++) {
+                            $("#state").append("<option value='" + result[i].usps + "'>" + result[i].state + "</option>");
+                        }
+     
+                    } 
+                });//ajax
+            });
+            
+            $("#state").on("change",function(){
+                
+                //alert($("#state").val());
+                
+                $.ajax({
+                    method: "get",
+                    url: "https://cst336.herokuapp.com/projects/api/countyListAPI.php",
+                    dataType: "json",
+                    data: {"state" : $("#state").val()},
+                    success: function(result,status) {
+  
+                        //alert(result[0].county);
+                        $("#county").html("<option> Select One </option>");
+                        for (let i = 0; i < result.length; i++) {
+                            $("#county").append("<option>" + result[i].county + "</option>");
+                        }
+ 
+                    } 
+                });//ajax
+            });//state
+            
+            $("#username").on("change",function(){
+                
+                //alert($("#username").val());
+                $.ajax({
+                    method: "get",
+                    url: "https://cst336.herokuapp.com/projects/api/usernamesAPI.php",
+                    dataType: "json",
+                    data: {"username" : $("#username").val()},
+                    success: function(result,status) {
+  
+                        if(result.available) {
+                            $("#usernameError").html("Username is available!");
+                            $("#usernameError").css("color", "green");
+                            usernameAvailable = true;
+                        }
+                        else {
+                            $("#usernameError").html("Username is not available!");
+                            $("#usernameError").css("color", "red");
+                            usernameAvailable = false;
+                        }
+ 
+                    } 
+                });//ajax
+            });//username
+            
+            $("#signupForm").submit(function(e){
+           
+                //alert("submitting form...");
+                if (!isFormValid()) {
+                    e.preventDefault();
+                }
+           
+            });//signupForm
+       
+            function isFormValid(){
+                var isValid = true;
+                if (!usernameAvailable) {
+                    isValid = false;
+                }
+          
+                if ($("#username").val().length == 0) {
+                    isValid = false;
+                    $("#usernameError").html("Username is required");
+                }
+          
+                if ($("#password").val() != $("#passwordAgain").val()){
+                    $("#passwordAgainError").html("Password Mismatch!");
+                    isValid = false;
+                }
+                
+                if ($("#password").val().length != 0 && $("#passwordAgain").val().length == 0) {
+                    $("#passwordAgainError").html("Retype password.");
+                    isValid = false;
+                }
+                
+                if ($("#password").val().length < 6){
+                    $("#passwordAgainError").html("Password must have at least 6 characters.");
+                    isValid = false;
+                }
+                return isValid;
+            }
+            
+        </script>
+        
+        <div class="container" id="footer">
+            <hr>
+            <p class="text-muted text-center">CST336 Internet Programming.  2019&copy; Houser <br>
+            <strong>Disclaimer:</strong> The information in this webpage is fictitious. <br>
+            It is used for academic purposes only. <br></p>
+            <img src="img/CSUMB.jpg" class="mx-auto d-block img-responsive" alt="CSUMB logo">
+        </div>
+
+    </body>
+</html>

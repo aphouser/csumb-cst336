@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>CST336 HW2</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" ></script>
+    <script type="text/Javascript" src="./js/script.js"></script>
+
+    
+</head>
+
+<body>
+
+    <p class="title">
+        <h1>The One Armed Bandit</h1>
+    </p>
+
+
+    <div id="images">
+        <span id="reel1" class="reels"><img src ='img/bar.png' alt='Bar'></span>
+        <span id="reel2" class="reels"><img src ='img/bar.png' alt='Bar'></span>
+        <span id="reel3" class="reels"><img src ='img/bar.png' alt='Bar'></span>
+    </div>
+    <p>
+        <input class="btn" type="button" value="Click Here To Spin" onClick="spin()">
+    </p>
+
+    <p>
+        <h3>Credits to wager:</h3>
+        <input type="text" id="creditsOut"></input>
+        <br><br>
+        <h3>Add credits here:</h3>
+        <input type="text" id="creditsIn"></input>
+        <br><br>
+        <button class="btn" onClick="addCredits(parseInt(document.getElementById('creditsIn').value,10))"> Add Credits </button>
+    </p>
+
+    <h3>Total credits: </h3>
+    <p id="p2">0</p>
+
+    <p id="messages"></p>
+    
+    <footer>
+        <hr>
+        CST336 Internet Programming.  2019&copy; Houser <br>
+        <strong>Disclaimer:</strong> The information in this webpage is fictitious. <br>
+        It is used for academic purposes only. <br>
+        <figure>
+            <img src="img/CSUMB.jpg" alt="CSUMB logo">
+        </figure>
+    </footer>
+        
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chuck Norris Jokes</title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="header" class="d-flex justify-content-center">
+            <h1 class="display-3">
+                <img src="img/cnIcon.png" alt="Chuck Norris icon">
+                <u>Chuck Norris Jokes!</u>
+                <img src="img/cnIcon.png" alt="Chuck Norris icon">
+            </h1>
+        </div>
+        <div id="flavor">
+            <p><h2>Learn some jokes about your favorite Texas ranger so you can <strong>roundhouse kick</strong> them at your friends!</h2></p>
+        </div>
+        
+        <div id="instructions">
+            <p>Use the search box to look for jokes that contain a word or topic.<br>
+            Use the category dropdown and the associated button to get a rando joke from the category selected.<br>
+            Or, use the random joke button to just get a random Chuck Norris joke displayed at the bottom of the screen.</p>
+        </div>
+        
+        <form id="chuckForm" method="get">
+            Keyword:  <input type="text" id="searchText">
+            <input type="button" id="searchButton" class="btn btn-warning" value="Search"><br><br>
+            Select a Category: <select id="category" class="btn btn-warning btn-sm dropdown-toggle"></select><br><br>
+            <input type="button" id="randomCat" class="btn btn-warning" value="Random From Category"><br><br>
+            <input type="button" id="random" class="btn btn-warning" value="Get Random Joke"><br>
+            <span id="joke"></span><br>
+        </form>
+        
+        <script>
+            //initially populate categories
+            $(document).ready(function(){
+                $.ajax({
+                    method: "GET",
+                    url: "https://api.chucknorris.io/jokes/categories/",
+                    dataType: "json",
+                    data: {"category" : $("#category").val()},
+                    success: function(result, status) {
+                        
+                        $("#category").html("<option>Select One</option>");
+                        for (let i = 0; i < result.length; i++) {
+                            $("#category").append("<option value='" + result[i] + "'>" + result[i] + "</option>");
+                        }
+                    
+                    }
+                }); //ajax
+            });
+            
+            // function to display a random joke
+            $("#random").on("click",function(){
+                $.ajax({
+                    method: "get",
+                    url: "https://api.chucknorris.io/jokes/random",
+                    dataType: "json",
+                    data: {"joke" : $("#joke").val()},
+                    success: function(result,status) {
+  
+                        $("#joke").html(result.value);
+ 
+                    } 
+                });//ajax
+            });//random
+            
+            // function to display random joke based on category
+            $("#randomCat").on("click",function(){
+                if($("#category").val() == "Select One") {
+                    alert("Category required for random joke by category");
+                }
+                else {
+                    $.ajax({
+                        method: "get",
+                        url: "https://api.chucknorris.io/jokes/random?category=" + $("#category").val(),
+                        dataType: "json",
+                        data: {"joke" : $("#joke").val()},
+                        success: function(result,status) {
+      
+                            $("#joke").html(result.value);
+     
+                        } 
+                    });//ajax
+                }
+            });//randomCat
+            
+            // function to search for a joke
+            $("#searchButton").on("click",function(){
+                if($("#searchText").val().length == 0) {
+                    alert("Text required to search by keyword");
+                }
+                else {
+                    $.ajax({
+                        method: "get",
+                        url: "https://api.chucknorris.io/jokes/search?query=" + $("#searchText").val(),
+                        dataType: "json",
+                        data: {"joke" : $("#joke").val()},
+                        success: function(result,status) {
+                            
+                            for (let i = 0; i < result.result.length; i++) {
+                                $("#joke").append(result.result[i].value + "<br><br>");
+                            }
+     
+                        } 
+                    });//ajax
+                }
+            });//joke search
+            
+        </script>
+        
+        <div class="container" id="footer">
+            <hr>
+            <p class="text-center">CST336 Internet Programming.  2019&copy; Houser <br>
+            <strong>Disclaimer:</strong> Content created for academic program. <br></p>
+            <img src="img/CSUMB.jpg" class="mx-auto d-block img-responsive" alt="CSUMB logo">
+        </div>
+
+    </body>
+</html>

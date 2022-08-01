@@ -1,0 +1,2 @@
+# CST336lab1
+Lab 1 for CSUMB 336 Fall 2019

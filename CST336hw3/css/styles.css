@@ -1,0 +1,29 @@
+body {
+    background-color: #cc7a00 !important;   
+}
+
+#header {
+    text-align: center;
+    color: white;
+}
+
+#footer {
+    font-size: 10px;
+}
+
+#flavor {
+    background-color: #cc7a00;
+    text-align: center;
+    color: #ffe0b3;
+}
+
+#instructions {
+    font-size: .8em;
+    background-color: #cc7a00;
+    color: white;
+    text-align: center;
+}
+
+#chuckForm {
+    text-align: center;
+}
